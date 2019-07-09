@@ -42,7 +42,7 @@ def post_file(filename):
         fp.write(request.data)
 
     # Return 201 CREATED
-    return jsonify({'confidence_score': 0.8})
+    return jsonify({'healthy': 0.8})
 
 
 if __name__ == "__main__":
