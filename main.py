@@ -3,7 +3,7 @@ import os
 from flask import Flask, request, abort, jsonify, send_from_directory
 
 
-UPLOAD_DIRECTORY = "/home/peter/PycharmProjects/untitled/uploads"
+UPLOAD_DIRECTORY = "/tmp/uploads"
 
 if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)
@@ -37,6 +37,7 @@ def post_file(filename):
         # Return 400 BAD REQUEST
         abort(400, "no subdirectories directories allowed")
 
+    print(request.data)
     with open(os.path.join(UPLOAD_DIRECTORY, filename), "wb") as fp:
         fp.write(request.data)
 
