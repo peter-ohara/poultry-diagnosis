@@ -9,6 +9,7 @@ verify_ssl = true
 flask = "*"
 requests = "*"
 gunicorn = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.6"
