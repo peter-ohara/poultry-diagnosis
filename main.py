@@ -2,14 +2,12 @@ import os
 
 from flask import Flask, request, abort, jsonify, send_from_directory
 from flask_cors import CORS
-
-
+import random
 
 UPLOAD_DIRECTORY = "/tmp/uploads"
 
 if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)
-
 
 api = Flask(__name__)
 CORS(api)
@@ -39,9 +37,13 @@ def classify_image():
     print(request.json)
 
     # Return 201 CREATED
-    return jsonify({'healthy': 0.8})
+    return jsonify(
+        {
+            'class': random.choice(['normal', 'abnormal']),
+            'confidence_score': random.uniform(0.75, 0.92)
+        }
+    )
 
 
 if __name__ == "__main__":
     api.run(debug=True, port=8000)
-
