@@ -32,17 +32,11 @@ def get_file(path):
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
 
 
-@api.route("/files/<filename>", methods=["POST"])
-def post_file(filename):
-    """Upload a file."""
+@api.route("/classify_image", methods=["POST"])
+def classify_image():
+    """Classify an image"""
 
-    if "/" in filename:
-        # Return 400 BAD REQUEST
-        abort(400, "no subdirectories directories allowed")
-
-    print(request.data)
-    with open(os.path.join(UPLOAD_DIRECTORY, filename), "wb") as fp:
-        fp.write(request.data)
+    print(request.json)
 
     # Return 201 CREATED
     return jsonify({'healthy': 0.8})
