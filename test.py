@@ -11,9 +11,8 @@ API_KEY = 'i0cgsdYL3hpeOGkoGmA2TxzJ8LbbU1HpbkZo8B3kFG2bRKjx3V'
 
 headers = {'UserAPI-Key': API_KEY}
 
-response = requests.get('{}/files'.format(API_URL), headers=headers)
-
-print(response.json())
+# response = requests.get('{}/files'.format(API_URL), headers=headers)
+# print(response.json())
 
 with open('test_file.png', 'rb') as fp:
     content = fp.read()
@@ -21,7 +20,7 @@ with open('test_file.png', 'rb') as fp:
 response = requests.post(
     '{}/classify_image'.format(API_URL),
     headers=headers,
-    json={'url': 'https://res.cloudinary.com/tenderswift/image/upload/landing-page/horizontal-logo-inverse.png'}
+    json={'url': 'https://www.almanac.com/sites/default/files/styles/primary_image_in_article/public/image_nodes/daffodil.jpg?itok=KSBgH9y9'}
 )
 
 print(response.text)

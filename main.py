@@ -1,8 +1,11 @@
 import os
 
+import requests
 from flask import Flask, request, abort, jsonify, send_from_directory
 from flask_cors import CORS
 import random
+from predict import predict
+from fc_model import load_checkpoint
 
 UPLOAD_DIRECTORY = "/tmp/uploads"
 
@@ -34,13 +37,25 @@ def get_file(path):
 def classify_image():
     """Classify an image"""
 
-    print(request.json)
+    url = request.json['url']
+
+    r = requests.get(url, stream=True)
+
+    tmp_image_path = UPLOAD_DIRECTORY + '/temp_image.png'
+    if r.status_code == 200:
+        with open(tmp_image_path, 'wb') as f:
+            for chunk in r.iter_content(1024):
+                f.write(chunk)
+    print(r.status_code)
+
+    model, optimizer, epoch, training_loss = load_checkpoint('checkpoint.tar')
+    probs, classes = predict(tmp_image_path, model, topk=1, category_names='cat_to_name.json')
 
     # Return 201 CREATED
     return jsonify(
         {
-            'class': random.choice(['normal', 'abnormal']),
-            'confidence_score': random.uniform(0.75, 0.92)
+            'class': probs[0],
+            'confidence_score': classes[0]
         }
     )
 
