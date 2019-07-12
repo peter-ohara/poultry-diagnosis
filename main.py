@@ -1,11 +1,11 @@
 import os
 
 import requests
-from flask import Flask, request, abort, jsonify, send_from_directory
+import torch
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-import random
+
 from predict import predict
-from fc_model import load_checkpoint
 
 UPLOAD_DIRECTORY = "/tmp/uploads"
 
@@ -48,7 +48,8 @@ def classify_image():
                 f.write(chunk)
     print(r.status_code)
 
-    model, optimizer, epoch, training_loss = load_checkpoint('checkpoint.tar')
+    model = torch.jit.load('model.pt')
+    print(model)
     probs, classes = predict(tmp_image_path, model, topk=1, category_names='cat_to_name.json')
 
     # Return 201 CREATED

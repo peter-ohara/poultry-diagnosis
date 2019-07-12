@@ -14,7 +14,7 @@ headers = {'UserAPI-Key': API_KEY}
 # response = requests.get('{}/files'.format(API_URL), headers=headers)
 # print(response.json())
 
-with open('test_file.png', 'rb') as fp:
+with open('chicken.jpg', 'rb') as fp:
     content = fp.read()
 
 response = requests.post(

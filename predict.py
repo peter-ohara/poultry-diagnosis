@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 import argparse
-import torch
-from PIL import Image
 import json
 
+import torch
+from PIL import Image
+
 from helper import process_image
-from fc_model import load_checkpoint
 
 
-def predict(image_path, model, topk=5, category_names='cat_to_name.json', device="cpu"):
+def predict(image_path, model, topk=2, category_names='cat_to_name.json', device="cpu"):
     """ Predict the class (or classes) of a flower image using a trained deep learning model.
     """
     image = Image.open(image_path)
@@ -26,7 +26,7 @@ def predict(image_path, model, topk=5, category_names='cat_to_name.json', device
     with open(category_names, 'r') as f:
         cat_to_name = json.load(f)
 
-    idx_to_class = {v: k for k, v in model.class_to_idx.items()}
+    idx_to_class = {v: k for k, v in {'newcastle': 0, 'normal': 1}.items()}
 
     if topk > 1:
         top_ps = [top_p.item() for top_p in top_ps.squeeze()]
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     parser.add_argument("image_file", help="path to image of flower")
     parser.add_argument("checkpoint",
                         help="path to torch checkpoint containing trained flower classification model")
-    parser.add_argument("--top_k", help="return top KK most likely classes", type=int, default=5)
+    parser.add_argument("--top_k", help="return top KK most likely classes", type=int, default=2)
     parser.add_argument("--category_names", help="use a mapping of categories to real names",
                         default='cat_to_name.json')
     parser.add_argument("--gpu", help="Use GPU for inference", action="store_true")
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     device = "cuda" if args.gpu else "cpu"
-    model, optimizer, epoch, training_loss = load_checkpoint(args.checkpoint, device=device)
+    model = torch.jit.load('model.pt')
     probs, classes = predict(args.image_file, model, topk=args.top_k, category_names=args.category_names, device=device)
     print(probs)
     print(classes)
