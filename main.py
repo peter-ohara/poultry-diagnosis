@@ -1,7 +1,7 @@
 import os
 
-import requests
 import torch
+from datauri import DataURI
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
@@ -38,18 +38,13 @@ def classify_image():
     """Classify an image"""
 
     url = request.json['url']
-
-    r = requests.get(url, stream=True)
+    uri = DataURI(url)
 
     tmp_image_path = UPLOAD_DIRECTORY + '/temp_image.png'
-    if r.status_code == 200:
-        with open(tmp_image_path, 'wb') as f:
-            for chunk in r.iter_content(1024):
-                f.write(chunk)
-    print(r.status_code)
+    with open(tmp_image_path, 'wb') as f:
+        f.write(uri.data)
 
     model = torch.jit.load('model.pt')
-    print(model)
     probs, classes = predict(tmp_image_path, model, topk=1, category_names='cat_to_name.json')
 
     # Return 201 CREATED
