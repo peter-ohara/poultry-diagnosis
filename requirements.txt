@@ -6,11 +6,13 @@ Flask==1.1.1
 Flask-Cors==3.0.8
 gunicorn==19.9.0
 idna==2.8
+imutils==0.5.2
 itsdangerous==1.1.0
 Jinja2==2.10.1
 kiwisolver==1.1.0
 MarkupSafe==1.1.1
 numpy==1.16.4
+opencv-python==4.1.0.25
 Pillow==6.1.0
 pyparsing==2.4.0
 python-datauri==0.2.8
