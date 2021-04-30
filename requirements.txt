@@ -20,5 +20,5 @@ python-dateutil==2.8.0
 requests==2.22.0
 six==1.12.0
 https://download.pytorch.org/whl/cpu/torch-1.1.0-cp36-cp36m-linux_x86_64.whl
-urllib3==1.25.3
+urllib3==1.25.8
 Werkzeug==0.15.4
